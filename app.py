@@ -25,12 +25,9 @@ app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=1)
 
 client = pymongo.MongoClient("mongodb+srv://lrsinger:Und3rt%40lel0ver2015@dippin-dots-j4j.xwqye.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 db = client["mydatabase"]
-users_collection = db["users"]
-products_collection = db["products"]
-events_collection = db["events"]
 
 @app.errorhandler(404)
-def not_found(error=None):
+def not_found():
     message = {
         'message': 'Resource Not Found' + request.url,
         'status': 404
@@ -49,29 +46,62 @@ def image():
 
 #Creating New User
 @app.route('/api/v1/users', methods=['POST'])
-def register():
-    new_user = request.get_json()
-    new_user["password"] = hashlib.sha256(new_user["password"].encode("utf-8")).hexdigest()
-    doc = users_collection.find_one({"username": new_user["username"]})
-    if not doc:
-        users_collection.insert_one(new_user)
-        return jsonify({'msg': 'User created sccessfully'}), 201
-    else:
-        return jsonify({'msg': 'Username already exists'}), 409
+def create_user():
+    firstName = request.json['firstName']
+    lastName = request.json['lastName']
+    companyName = request.json['companyName']
+    username = request.json['username']
+    password = request.json['password']
+    streetAddress = request.json['streetAddress']
+    city = request.json['city']
+    state = request.json['state']
+    zip = request.json['zip']
+    phone = request.json['phone']
+    email = request.json['email']
+    iceCreamPrice = request.json['iceCreamPrice']
+    spoonPrice = request.json['spoonPrice']
+    admin = request.json['admin']
+    active = request.json['active']
+    
 
-#User Login
-@app.route('/api/v1/login', methods=["POST"])
-def login():
-    login_details = request.get_json()
-    user_from_db = users_collection.find_one({'username': login_details['username']})
-
-    if user_from_db:
-        encrpted_password = hashlib.sha256(login_details['password'].encode("utf-8")).hexdigest()
-        if encrpted_password == user_from_db['password']:
-            access_token = create_access_token(identity=user_from_db['username'])
-            return jsonify(access_token=access_token), 200
-
-    return jsonify({'msg': 'The username or password is incorrect'}), 401
+    if username and email and password:
+        hashed_password = generate_password_hash(password)
+        id = db.users.insert(
+            {'firstName': firstName, 
+            'lastName': lastName, 
+            'companyName': companyName,
+            'username': username, 
+            'password': hashed_password, 
+            'streetAddress': streetAddress, 
+            'city': city, 
+            'state': state, 
+            'zip': zip, 
+            'phone': phone,
+            'email': email,
+            'iceCreamPrice': iceCreamPrice,
+            'spoonPrice': spoonPrice,
+            'admin': admin,
+            'active': active
+            }
+        )
+        response = jsonify({
+            '_id': str(id),
+            'firstName': firstName, 
+            'lastName': lastName, 
+            'companyName': companyName,
+            'username': username,
+            'password': password,
+            'streetAddress': streetAddress, 
+            'city': city, 
+            'state': state, 
+            'zip': zip, 
+            'phone': phone,
+            'email': email,
+            'iceCreamPrice': iceCreamPrice,
+            'spoonPrice': spoonPrice,
+            'admin': admin,
+            'active': active
+        })
 
 #Grab User(s)
 @app.route('/users', methods=['GET'])

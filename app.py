@@ -26,15 +26,6 @@ app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=1)
 client = pymongo.MongoClient("mongodb+srv://lrsinger:Und3rt%40lel0ver2015@dippin-dots-j4j.xwqye.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 db = client["mydatabase"]
 
-@app.errorhandler(404)
-def not_found():
-    message = {
-        'message': 'Resource Not Found' + request.url,
-        'status': 404
-    }
-    response = jsonify(message)
-    response.status_code = 404
-    return response
 
 def image():
     fs = gridfs.GridFS(db)
@@ -319,6 +310,17 @@ def update_event(id):
         return response
     else:
         return not_found()
+
+
+@app.errorhandler(404)
+def not_found(error=None):
+    message = {
+        'message': 'Resource Not Found' + request.url,
+        'status': 404
+    }
+    response = jsonify(message)
+    response.status_code = 404
+    return response
 
 
 if __name__ == '__main__':

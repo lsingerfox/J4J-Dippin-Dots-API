@@ -163,7 +163,7 @@ def update_user(id):
         return not_found()
 
 #Add Product
-@app.route('/products', methods=['POST'])
+@app.route('/api/v1/products', methods=['POST'])
 def add_product():
     productName = request.json['productName']
     price = request.json['price']

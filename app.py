@@ -1,15 +1,19 @@
 from flask import Flask, request, jsonify, Response
+from flask_jwt_extended.utils import create_access_token
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from bson import json_util
 from bson.objectid import ObjectId
-import pymongo
+from pymongo import MongoClient
+from flask_pymongo import PyMongo
 import gridfs
-from flask_jwt_extended import create_access_token, JWTManager, jwt_required, get_jwt_identity
+import jwt
 import datetime
 import hashlib
 import json
 import os
+
+from flask_jwt_extended import create_access_token, JWTManager
 
 
 from werkzeug.security import generate_password_hash, check_password_hash, safe_str_cmp
@@ -21,10 +25,11 @@ app.secret_key = 'H0verM@g1c'
 
 jwt = JWTManager(app)
 app.config['JWT_SECRET_KEY'] = 'H0verM@g1c'
+app.config["MONGO_URI"] = "mongodb+srv://lrsinger:Und3rt%40lel0ver@dippin-dots-j4j-dont-te.xwqye.mongodb.net/Dippin-Dots-J4J-DONT-TERMINATE?retryWrites=true&w=majority"
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=1)
 
-client = pymongo.MongoClient("mongodb+srv://lrsinger:Und3rt%40lel0ver2015@dippin-dots-j4j.xwqye.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
-db = client["mydatabase"]
+client =PyMongo(app)
+db=client.db
 
 
 def image():
@@ -109,6 +114,18 @@ def get_user(id):
     user = db.users.find_one({id: ObjectId(id), })
     response = json_util.dumps(user)
     return Response(response, mimetype="application/json")
+
+
+@app.route('/token', methods=['POST'])
+def create_token():
+    username=request.json["username"]
+    password=request.json["password"]
+    user = db.users.find_one({username:username, password:password })
+    if user is None:
+        return jsonify({"msg": "Username not found"}),401
+    else:
+        access_token=create_access_token(identity=user.id)
+        return jsonify({"token": access_token})
 
 
 #Delete User

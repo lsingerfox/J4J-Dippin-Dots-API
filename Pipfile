@@ -11,6 +11,8 @@ marshmallow-sqlalchemy = "*"
 pymongo = "*"
 authlib = "*"
 flask-jwt-extended = "*"
+jwt = "*"
+flask-pymongo = "*"
 
 [dev-packages]
 

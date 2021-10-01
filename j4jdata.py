@@ -24,12 +24,11 @@ app = Flask(__name__)
 app.secret_key = 'H0verM@g1c'
 
 jwt = JWTManager(app)
-app.config['JWT_SECRET_KEY'] = 'H0verM@g1c'
+app.config['SECRET_KEY'] = 'H0verM@g1c'
 app.config["MONGO_URI"] = "mongodb+srv://lrsinger:Und3rt%40lel0ver@dippin-dots-j4j-dont-te.xwqye.mongodb.net/Dippin-Dots-J4J-DONT-TERMINATE?retryWrites=true&w=majority"
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=1)
 
-client =PyMongo(app)
-db=client.db
+mongodb_client = PyMongo(app)
+db = mongodb_client.db
 
 
 def image():

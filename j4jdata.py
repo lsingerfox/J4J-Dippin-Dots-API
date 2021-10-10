@@ -27,76 +27,68 @@ jwt = JWTManager(app)
 app.config['SECRET_KEY'] = 'H0verM@g1c'
 app.config["MONGO_URI"] = "mongodb+srv://lrsinger:Und3rt%40lel0ver@dippin-dots-j4j-dont-te.xwqye.mongodb.net/Dippin-Dots-J4J-DONT-TERMINATE?retryWrites=true&w=majority"
 
-mongodb_client = PyMongo(app)
-db = mongodb_client.db
-
-
-def image():
-    fs = gridfs.GridFS(db)
-    file = image("")
-    with open(file, 'rb') as f:
-        contents = f.read()
-    fs.put(contents, filename = 'file')
+MongoClient = PyMongo(app)
+db = MongoClient.db
 
 
 #Creating New User
-@app.route('/api/v1/users', methods=['POST'])
-def create_user():
-    firstName = request.json['firstName']
-    lastName = request.json['lastName']
-    companyName = request.json['companyName']
-    username = request.json['username']
-    password = request.json['password']
-    streetAddress = request.json['streetAddress']
-    city = request.json['city']
-    state = request.json['state']
-    zip = request.json['zip']
-    phone = request.json['phone']
-    email = request.json['email']
-    iceCreamPrice = request.json['iceCreamPrice']
-    spoonPrice = request.json['spoonPrice']
-    admin = request.json['admin']
-    active = request.json['active']
+# @app.route('/api/v1/users', methods=['POST'])
+# def create_user():
+#     firstName = request.json['firstName']
+#     lastName = request.json['lastName']
+#     companyName = request.json['companyName']
+#     username = request.json['username']
+#     password = request.json['password']
+#     streetAddress = request.json['streetAddress']
+#     city = request.json['city']
+#     state = request.json['state']
+#     zip = request.json['zip']
+#     phone = request.json['phone']
+#     email = request.json['email']
+#     iceCreamPrice = request.json['iceCreamPrice']
+#     spoonPrice = request.json['spoonPrice']
+#     admin = request.json['admin']
+#     active = request.json['active']
     
 
-    if username and email and password:
-        hashed_password = generate_password_hash(password)
-        id = db.users.insert(
-            {'firstName': firstName, 
-            'lastName': lastName, 
-            'companyName': companyName,
-            'username': username, 
-            'password': hashed_password, 
-            'streetAddress': streetAddress, 
-            'city': city, 
-            'state': state, 
-            'zip': zip, 
-            'phone': phone,
-            'email': email,
-            'iceCreamPrice': iceCreamPrice,
-            'spoonPrice': spoonPrice,
-            'admin': admin,
-            'active': active
-            }
-        )
-        response = jsonify({
-            '_id': str(id),
-            'firstName': firstName, 
-            'lastName': lastName, 
-            'companyName': companyName,
-            'username': username,
-            'password': password,
-            'streetAddress': streetAddress, 
-            'city': city, 
-            'state': state, 
-            'zip': zip, 
-            'phone': phone,
-            'email': email,
-            'iceCreamPrice': iceCreamPrice,
-            'spoonPrice': spoonPrice,
-            'admin': admin,
-            'active': active
-        })
+#     if username and email and password:
+#         hashed_password = generate_password_hash(password)
+#         id = db.users.insert(
+#             {'firstName': firstName, 
+#             'lastName': lastName, 
+#             'companyName': companyName,
+#             'username': username, 
+#             'password': hashed_password, 
+#             'streetAddress': streetAddress, 
+#             'city': city, 
+#             'state': state, 
+#             'zip': zip, 
+#             'phone': phone,
+#             'email': email,
+#             'iceCreamPrice': iceCreamPrice,
+#             'spoonPrice': spoonPrice,
+#             'admin': admin,
+#             'active': active
+#             }
+#         )
+#         response = jsonify({
+#             '_id': str(id),
+#             'firstName': firstName, 
+#             'lastName': lastName, 
+#             'companyName': companyName,
+#             'username': username,
+#             'password': password,
+#             'streetAddress': streetAddress, 
+#             'city': city, 
+#             'state': state, 
+#             'zip': zip, 
+#             'phone': phone,
+#             'email': email,
+#             'iceCreamPrice': iceCreamPrice,
+#             'spoonPrice': spoonPrice,
+#             'admin': admin,
+#             'active': active
+#         })
 
 #Grab User(s)
 @app.route('/users', methods=['GET'])
@@ -282,7 +274,7 @@ def add_event():
     else:
         return not_found()
 
-#Get Product(s)
+#Get Event(s)
 @app.route('/events', methods=['GET'])
 def get_events():
     print(id)
@@ -298,7 +290,7 @@ def get_event(id):
     response = json_util.dumps(event)
     return Response(response, mimetype="application/json")
 
-#Delete Product
+#Delete Event
 @app.route('/events/<id>', methods=['DELETE'])
 def delete_event(id):
     db.events.delete_one({'_id': ObjectId(id)})
@@ -307,7 +299,7 @@ def delete_event(id):
     return response
 
 
-#Update Product
+#Update Event
 @app.route('/events/<id>', methods=['PUT'])
 def update_event(id):
     eventName = request.json['eventName']

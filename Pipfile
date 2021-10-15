@@ -13,6 +13,7 @@ authlib = "*"
 flask-jwt-extended = "*"
 jwt = "*"
 flask-pymongo = "*"
+flask-jwt = "*"
 
 [dev-packages]
 

@@ -25,7 +25,7 @@ app.secret_key = 'H0verM@g1c'
 
 jwt = JWTManager(app)
 app.config['SECRET_KEY'] = 'H0verM@g1c'
-app.config["MONGO_URI"] = "mongodb+srv://lrsinger:Und3rt%40lel0ver@dippin-dots-j4j-dont-te.xwqye.mongodb.net/Dippin-Dots-J4J-DONT-TERMINATE?retryWrites=true&w=majority"
+app.config["MONGO_URI"] = "mongodb+srv://lrsinger:Und3rt%40lel0ver2015@dippin-dots-j4j-dont-te.xwqye.mongodb.net/Dippin-Dots-J4J-DONT-TERMINATE?retryWrites=true&w=majority"
 
 MongoClient = PyMongo(app)
 db = MongoClient.db
@@ -183,7 +183,6 @@ def add_product():
                 'productName': productName,
                 'price': price,
                 'category': category,
-                'image': image(""),
                 'active': active
             }
         )
@@ -192,7 +191,6 @@ def add_product():
             'productName': productName,
             'price': price,
             'category': category,
-            'image': image(""),
             'active': active
         })
         response.status_code = 200
@@ -238,7 +236,6 @@ def update_product(id):
             'productName': productName,
             'price': price,
             'category': category,
-            'image': image(""),
             'active': active}})
         response = jsonify({'message': 'Product' + id + 'Updated Successfully'})
         response.status_code = 200

@@ -2,8 +2,6 @@ from flask import Flask, request, jsonify, Response
 from flask_jwt import JWT, jwt_required, current_identity
 from pymongo import MongoClient
 from flask_pymongo import PyMongo
-from flask_jwt_extended.utils import create_access_token
-import pymongo
 from werkzeug.security import safe_str_cmp, generate_password_hash
 
 class User(object):
@@ -39,7 +37,7 @@ def identity(payload):
 app = Flask(__name__)
 app.debug = True
 app.config['SECRET_KEY'] = 'H0verm@gic'
-app.config['MONGO_URI'] = "mongodb+srv://lrsinger:Und3rt%40lel0ver@dippin-dots-j4j-dont-te.xwqye.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+app.config['MONGO_URI'] = "mongodb+srv://lrsinger:Und3rt%40lel0ver2015@dippin-dots-j4j-dont-te.xwqye.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 
 jwt = JWT(app, authentication, identity)
 
@@ -47,7 +45,7 @@ MongoClient = PyMongo(app)
 db = MongoClient.db
 
 #Creating New User
-@app.route('/api/v1/users', methods=['POST'])
+@app.route('/token', methods=['POST'])
 def create_user():
     firstName = request.json['firstName']
     lastName = request.json['lastName']
@@ -104,6 +102,7 @@ def create_user():
             'admin': admin,
             'active': active
         })
+        return response
 
 
 @app.route('/protected')
@@ -111,6 +110,16 @@ def create_user():
 def protected():
     return '%s' % current_identity
 
+
+@app.errorhandler(404)
+def not_found(error=None):
+    message = {
+        'message': 'Resource Not Found: ' + request.url,
+        'status': 404
+    }
+    response = jsonify(message)
+    response.status_code = 404
+    return response
 
 if __name__ == '__main__':
     app.run()

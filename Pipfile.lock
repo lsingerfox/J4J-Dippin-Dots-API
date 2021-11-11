@@ -115,6 +115,13 @@
             "markers": "python_version >= '3.6'",
             "version": "==3.4.8"
         },
+        "dnspython3": {
+            "hashes": [
+                "sha256:6eb9504abafb91cb67ed9dc3d3289a3ccc438533b460eccbf77e36c5323100f4"
+            ],
+            "index": "pypi",
+            "version": "==1.15.0"
+        },
         "flask": {
             "hashes": [
                 "sha256:1c4c257b1892aec1398784c63791cbaa43062f1f7aeb555c4da961b20ee68f55",

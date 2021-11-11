@@ -18,6 +18,8 @@ flask-jwt = "*"
 flask-wtf = "*"
 certifi = "*"
 flask-login = "*"
+pyramid = "*"
+dnspython3 = "*"
 
 [dev-packages]
 

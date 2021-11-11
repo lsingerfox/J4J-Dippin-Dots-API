@@ -3,6 +3,7 @@ from flask import Flask, request, jsonify, session,redirect,url_for
 from flask.templating import render_template
 from flask_jwt import JWT, jwt_required, current_identity
 from pymongo import MongoClient
+import dnspython3
 from flask_wtf import FlaskForm
 from flask_wtf.csrf import CSRFProtect
 from wtforms import StringField, PasswordField, BooleanField, IntegerField,SubmitField

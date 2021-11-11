@@ -39,14 +39,10 @@ class User(object):
         return jsonify(user), 200
 
 
-csrf = CSRFProtect()
-
 app = Flask(__name__)
 app.debug = True
 app.config['SECRET_KEY'] = 'H0verm@gic'
 app.config['MONGO_URI'] = "mongodb+srv://lrsinger:Und3rt4lel0ver2015@database.xwqye.mongodb.net/database?retryWrites=true&w=majority"
-
-csrf.init_app(app)
 
 jwt = JWT(app, User.authentication, User.identity)
 

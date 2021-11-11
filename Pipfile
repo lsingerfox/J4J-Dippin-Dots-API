@@ -4,6 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+bson = "*"
 flask = "*"
 flask-sqlalchemy = "*"
 flask-marshmallow = "*"
@@ -14,6 +15,9 @@ flask-jwt-extended = "*"
 jwt = "*"
 flask-pymongo = "*"
 flask-jwt = "*"
+flask-wtf = "*"
+certifi = "*"
+flask-login = "*"
 
 [dev-packages]
 

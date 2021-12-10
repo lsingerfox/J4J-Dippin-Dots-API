@@ -6,20 +6,12 @@ name = "pypi"
 [packages]
 bson = "*"
 flask = "*"
-flask-sqlalchemy = "*"
-flask-marshmallow = "*"
-marshmallow-sqlalchemy = "*"
 pymongo = "*"
-authlib = "*"
-flask-jwt-extended = "*"
-jwt = "*"
-flask-pymongo = "*"
 flask-jwt = "*"
 flask-wtf = "*"
-certifi = "*"
 flask-login = "*"
-pyramid = "*"
-dnspython3 = "*"
+flask-cors = "*"
+gunicorn = "*"
 
 [dev-packages]
 

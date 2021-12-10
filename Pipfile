@@ -12,6 +12,8 @@ flask-wtf = "*"
 flask-login = "*"
 flask-cors = "*"
 gunicorn = "*"
+wtforms = "*"
+werkzeug = "*"
 
 [dev-packages]
 

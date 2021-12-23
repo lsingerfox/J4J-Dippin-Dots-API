@@ -43,8 +43,11 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[InputRequired(), Length(min=8)])
 
 
+@app.route("/", methods = ["POST","GET"])
+def home():
+    return "j4j API"
 
-@app.route("/user/login/", methods = ["POST"])
+@app.route("/user/login", methods = ["POST"])
 def login():
     form = LoginForm()
     email = request.json['email']

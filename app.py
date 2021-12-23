@@ -43,48 +43,48 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[InputRequired(), Length(min=8)])
 
 
-class UserSession:
-    @app.route("/user/login/", methods = ["POST"])
-    def login():
-        form = LoginForm()
-        email = request.json['email']
-        user = db.admin.find_one({"email": email})
-        print(form.password.data)
-        print(user['password'])  
-        if user and check_password_hash(user['password'], form.password.data):
-            return jsonify({ "msg": "Welcome Back, " + json.loads(json_util.dumps(user["name"])) + "!"}), 200
-        else:
-            return jsonify({ "error": "Invalid email or password"}), 401
+
+@app.route("/user/login/", methods = ["POST"])
+def login():
+    form = LoginForm()
+    email = request.json['email']
+    user = db.admin.find_one({"email": email})
+    print(form.password.data)
+    print(user['password'])  
+    if user and check_password_hash(user['password'], form.password.data):
+        return jsonify({ "msg": "Welcome Back, " + json.loads(json_util.dumps(user["name"])) + "!"}), 200
+    else:
+        return jsonify({ "error": "Invalid email or password"}), 401
 
 
-    @app.route('/dashboard/')
-    @login_required
-    def dashboard():
-        return render_template('dashboard.html', name=current_user.name)
+@app.route('/dashboard/')
+@login_required
+def dashboard():
+    return render_template('dashboard.html', name=current_user.name)
 
 
-    @app.route('/logout')
-    @login_required
-    def logout():
-        logout_user()
-        return redirect(url_for('home'))
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('home'))
 
 
-    @app.route('/protected')
-    @jwt_required()
-    def protected():
-        return '%s' % current_identity
+@app.route('/protected')
+@jwt_required()
+def protected():
+    return '%s' % current_identity
 
 
-    @app.errorhandler(404)
-    def not_found(error=None):
-        message = {
-            'message': 'Resource Not Found: ' + request.url,
-            'status': 404
-        }
-        response = jsonify(message)
-        response.status_code = 404
-        return response
+@app.errorhandler(404)
+def not_found(error=None):
+    message = {
+        'message': 'Resource Not Found: ' + request.url,
+        'status': 404
+    }
+    response = jsonify(message)
+    response.status_code = 404
+    return response
 
 
 if __name__ == "__main__":

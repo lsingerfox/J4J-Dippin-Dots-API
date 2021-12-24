@@ -39,28 +39,6 @@ db = s.db
 CORS(app)
 
 
-def setUpClass(cls):
-    from pymongo.errors import ServerSelectionTimeoutError
-    from pymongo import MongoClient
-
-    cls.has_mongo_connection = False
-
-    try:
-        client = MongoClient(
-            serverSelectionTimeoutMS=0.1
-        )
-        client.server_info()
-
-        cls.adapter = MongoDatabaseAdapter(
-            database_uri = 'mongodb+srv://lrsinger:Und3rt4lel0ver2015@database.xwqye.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
-        )
-
-        cls.has_mongo_connection = True
-
-    except ServerSelectionTimeoutError:
-        pass
-
-
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[InputRequired(), Length(min=8, max=100)])
     password = PasswordField('Password', validators=[InputRequired(), Length(min=8)])

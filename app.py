@@ -67,7 +67,11 @@ class UserSession():
     @app.route('/dashboard/', methods = ["POST", "GET"])
     @login_required
     def dashboard():
-        user = User.start_session()
+        user = {
+            db.name: request.json['name'],
+            db.email: request.json['email'],
+            db.phone: request.json['phone']
+        }
         return (user)
 
 

@@ -59,14 +59,16 @@ class UserSession():
         print(user['password'])  
         if user and check_password_hash(user['password'], form.password.data):
             return jsonify({ "msg": "Welcome Back, " + json.loads(json_util.dumps(user["name"])) + "!"}), 200
+            #return jsonnify((json_util.dumps(user))
         else:
             return jsonify({ "error": "Invalid email or password"}), 401
 
 
-    @app.route('/dashboard/')
+    @app.route('/dashboard/', methods = ["POST", "GET"])
     @login_required
     def dashboard():
-        return render_template('dashboard.html', name=current_user.name)
+        user = User.start_session()
+        return (user)
 
 
     @app.route('/logout')

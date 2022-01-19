@@ -72,7 +72,7 @@ class UserSession():
             db.email: request.json['email'],
             db.phone: request.json['phone']
         }
-        return (user)
+        return (user), 200
 
 
     @app.route('/logout')

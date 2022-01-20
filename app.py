@@ -11,9 +11,10 @@ from bson import json_util
 from flask_cors import CORS
 
 class User():
-    def __init__(self, name, email, password):
+    def __init__(self, name, email, phone, password):
         self.name = name
         self.email = email
+        self.phone = phone
         self.password = password
     
 
@@ -23,7 +24,7 @@ class User():
 
     def start_session(self,user):
         del user['password']
-        session['logged_in'] = True
+        session['LOGGED_IN'] = True
         session['user'] = user
         return jsonify(user), 200
     
@@ -67,12 +68,8 @@ class UserSession():
     @app.route('/dashboard/', methods = ["POST", "GET"])
     @login_required
     def dashboard():
-        user = {
-            db.name: request.json['name'],
-            db.email: request.json['email'],
-            db.phone: request.json['phone']
-        }
-        return (user), 200
+        user = User.start_session()
+        return (user)
 
 
     @app.route('/logout')

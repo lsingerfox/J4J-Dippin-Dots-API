@@ -1,5 +1,3 @@
-from itertools import product
-from unicodedata import name
 from flask import Flask, request, jsonify,json,session, redirect, render_template, url_for
 from pymongo import MongoClient, database
 from flask_jwt import jwt_required, current_identity
@@ -64,6 +62,13 @@ class UserSession():
             return ({"data": json.loads(json_util.dumps(user))})
         else:
             return jsonify({ "error": "Invalid email or password"}), 401
+
+
+    @app.route('/dashboard/', methods = ["POST", "GET"])
+    @login_required
+    def dashboard():
+        user = User.start_session()
+        return (user)
 
 
     @app.route('/logout')

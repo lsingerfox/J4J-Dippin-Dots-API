@@ -1,3 +1,5 @@
+from itertools import product
+from unicodedata import name
 from flask import Flask, request, jsonify,json,session, redirect, render_template, url_for
 from pymongo import MongoClient, database
 from flask_jwt import jwt_required, current_identity
@@ -59,17 +61,9 @@ class UserSession():
         print(form.password.data)
         print(user['password'])  
         if user and check_password_hash(user['password'], form.password.data):
-            return jsonify({ "msg": "Welcome Back, " + json.loads(json_util.dumps(user["name"])) + "!"}), 200
-            #return jsonnify((json_util.dumps(user))
+            return ({"data": json.loads(json_util.dumps(user))})
         else:
             return jsonify({ "error": "Invalid email or password"}), 401
-
-
-    @app.route('/dashboard/', methods = ["POST", "GET"])
-    @login_required
-    def dashboard():
-        user = User.start_session()
-        return (user)
 
 
     @app.route('/logout')
@@ -94,6 +88,13 @@ class UserSession():
         response = jsonify(message)
         response.status_code = 404
         return response
+
+
+class Products():
+    @app.route("/products", methods = ["POST"])
+    def products():
+        product = db.products.find_one({"Name": name})
+        return ({"data": json.loads(json_util.dumps(product))})
 
 
 if __name__ == "__main__":

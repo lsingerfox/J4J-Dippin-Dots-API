@@ -98,7 +98,8 @@ class UserSession():
 class Products():
     @app.route("/products", methods = ["POST"])
     def products():
-        product = db.products.find_one({"Name": name})
+        name = request.json['name']
+        product = db.products.find_one({"name": name})
         return ({"data": json.loads(json_util.dumps(product))})
 
 

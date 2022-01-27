@@ -104,6 +104,17 @@ class Products():
         title = request.json['title']
         product = db.products.find({"title": title})
         return ({"data": json.loads(json_util.dumps(product))}), 200
+    
+
+    @app.errorhandler(404)
+    def not_found(error=None):
+        message = {
+            'message': 'Resource Not Found: ' + request.url,
+            'status': 404
+        }
+        response = jsonify(message)
+        response.status_code = 404
+        return response
 
 
 if __name__ == "__main__":

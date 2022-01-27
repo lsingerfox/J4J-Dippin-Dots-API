@@ -1,3 +1,5 @@
+from email.mime import image
+import imp
 from flask import Flask, request, jsonify,json,session, redirect, render_template, url_for
 from pymongo import MongoClient, database
 from flask_jwt import jwt_required, current_identity
@@ -6,6 +8,7 @@ from wtforms import StringField, PasswordField
 from wtforms.validators import InputRequired, Length
 from werkzeug.security import check_password_hash
 from flask_login import login_required, logout_user, current_user
+import base64
 import os
 from bson import json_util
 from flask_cors import CORS
@@ -98,9 +101,9 @@ class UserSession():
 class Products():
     @app.route("/products", methods = ["POST"])
     def products():
-        name = request.json['name']
-        product = db.products.find_one({"name": name})
-        return ({"data": json.loads(json_util.dumps(product))})
+        title = request.json['title']
+        product = db.products.find({"title": title})
+        return ({"data": json.loads(json_util.dumps(product))}), 200
 
 
 if __name__ == "__main__":

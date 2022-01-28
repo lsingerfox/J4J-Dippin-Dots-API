@@ -74,7 +74,7 @@ class UserSession():
         return (user)
 
 
-    @app.route('/logout')
+    @app.route('/logout', methods = ["POST"])
     @login_required
     def logout():
         if 'email' in session:

@@ -78,8 +78,10 @@ class UserSession():
     @login_required
     def logout():
         if 'email' in session:
-            session.clear('email', None)
-        return redirect('/'), 200
+            session.pop('email', None)
+            return redirect('/'), 200
+        else:
+            return jsonify({"error": "Unable to logout"})
 
 
     @app.route('/protected')

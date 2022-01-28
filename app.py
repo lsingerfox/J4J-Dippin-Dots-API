@@ -77,8 +77,9 @@ class UserSession():
     @app.route('/logout')
     @login_required
     def logout():
-        logout_user()
-        return redirect(url_for('home')), 200
+        if 'email' in session:
+            session.pop('email', None)
+        return redirect('/'), 200
 
 
     @app.route('/protected')

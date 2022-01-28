@@ -78,7 +78,7 @@ class UserSession():
     @login_required
     def logout():
         if 'email' in session:
-            session.pop('email', None)
+            session.clear('email', None)
         return redirect('/'), 200
 
 

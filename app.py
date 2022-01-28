@@ -81,7 +81,7 @@ class UserSession():
             session.pop('email', None)
             return redirect('/'), 200
         else:
-            return jsonify({"error": "Unable to logout"})
+            return jsonify({"error": "Unable to logout"}), 401
 
 
     @app.route('/protected')

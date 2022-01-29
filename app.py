@@ -1,5 +1,3 @@
-from email.mime import image
-import imp
 from flask import Flask, request, jsonify,json,session, redirect, render_template, url_for
 from pymongo import MongoClient, database
 from flask_jwt import jwt_required, current_identity
@@ -79,7 +77,7 @@ class UserSession():
     def logout():
         if 'email' in session:
             session.pop('email', None)
-            return redirect('/'), 200
+            return jsonify("See you later!"), 200
         else:
             return jsonify({"error": "Unable to logout"}), 401
 
@@ -102,7 +100,7 @@ class UserSession():
 
 
 class Products():
-    @app.route("/products", methods = ["POST"])
+    @app.route("/products", methods = ["GET"])
     def products():
         title = request.json['title']
         product = db.products.find({"title": title})

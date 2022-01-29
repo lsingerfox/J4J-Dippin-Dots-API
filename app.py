@@ -6,7 +6,6 @@ from wtforms import StringField, PasswordField
 from wtforms.validators import InputRequired, Length
 from werkzeug.security import check_password_hash
 from flask_login import login_required, logout_user, current_user
-import base64
 import os
 from bson import json_util
 from flask_cors import CORS

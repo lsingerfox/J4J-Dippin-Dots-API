@@ -75,7 +75,7 @@ class UserSession():
     @login_required
     def logout():
         if 'email' in session:
-            session.pop('email', None)
+            session.clear('email', None)
             return jsonify("See you later!"), 200
         else:
             return jsonify({"error": "Unable to logout"}), 401
@@ -99,11 +99,14 @@ class UserSession():
 
 
 class Products():
-    @app.route("/products", methods = ["GET"])
+    @app.route("/products", methods = ["UPDATE"])
     def products():
         title = request.json['title']
-        product = db.products.find({"title": title})
-        return ({"data": json.loads(json_util.dumps(product))}), 200
+        image = request.json['image']
+        price = request.json['price']
+        product = db.products.find({"title": title, "image": image, "price": price})
+
+        return ({"data": json.loads(json_util.dumps(product))})
     
 
     @app.errorhandler(404)

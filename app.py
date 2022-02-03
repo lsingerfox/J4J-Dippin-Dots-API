@@ -99,7 +99,7 @@ class UserSession():
 
 
 class Products():
-    @app.route("/products", methods = ["UPDATE"])
+    @app.route("/products", methods = ["GET"])
     def products():
         title = request.json['title']
         image = request.json['image']

@@ -8,7 +8,7 @@ from werkzeug.security import check_password_hash
 from flask_login import login_required, logout_user, current_user
 import os
 from bson import json_util
-from flask_cors import CORS
+from flask_cors import CORS,cross_origin
 
 class User():
     def __init__(self, name, email, phone, password):
@@ -100,12 +100,10 @@ class UserSession():
 
 class Products():
     @app.route("/products", methods = ["GET"])
+    @cross_origin(supports_credentials=True)
     def products():
-        title = request.json['title']
-        image = request.json['image']
-        price = request.json['price']
-        product = db.products.find({"title": title, "image": image, "price": price})
 
+        product = db.products.find({})
         return ({"data": json.loads(json_util.dumps(product))})
     
 

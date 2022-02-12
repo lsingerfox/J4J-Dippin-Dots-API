@@ -76,7 +76,7 @@ class UserSession():
     def logout():
         if 'email' in session:
             session.clear('email', None)
-            return jsonify("See you later!"), 200
+            return 200
         else:
             return jsonify({"error": "Unable to logout"}), 401
 

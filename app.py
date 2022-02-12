@@ -5,7 +5,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField
 from wtforms.validators import InputRequired, Length
 from werkzeug.security import check_password_hash
-from flask_login import login_required, logout_user, current_user
+from flask_login import login_required, logout_user, LoginManager
 import os
 from bson import json_util
 from flask_cors import CORS,cross_origin
@@ -38,6 +38,7 @@ app.config['MONGO_URI'] = ("mongodb+srv://lrsinger:Und3rt4lel0ver2015@database.x
 s = MongoClient ("mongodb+srv://lrsinger:Und3rt4lel0ver2015@database.xwqye.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 db = s.db
 CORS(app)
+login = LoginManager(app)
 
 
 class LoginForm(FlaskForm):
@@ -72,13 +73,15 @@ class UserSession():
 
 
     @app.route('/logout', methods = ["POST"])
-    @login_required
+
     def logout():
-        if 'email' in session:
-            session.clear('email', None)
-            return 200
-        else:
-            return jsonify({"error": "Unable to logout"}), 401
+        message = {
+            'message': 'Logout Successful!',
+            'status': 200
+        }
+        response = jsonify(message)
+     
+        return response
 
 
     @app.route('/protected')

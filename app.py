@@ -2,7 +2,8 @@ from flask import Flask, request, jsonify,json,session, redirect, render_templat
 from pymongo import MongoClient, database
 from flask_jwt import jwt_required, current_identity
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField
+from sqlalchemy import true
+from wtforms import StringField, PasswordField, Form, TextField, TextAreaField, SubmitField, IntegerField
 from wtforms.validators import InputRequired, Length
 from werkzeug.security import check_password_hash
 from flask_login import login_required, logout_user, LoginManager
@@ -108,6 +109,37 @@ class Products():
 
         product = db.products.find({})
         return ({"data": json.loads(json_util.dumps(product))})
+    
+
+    @app.errorhandler(404)
+    def not_found(error=None):
+        message = {
+            'message': 'Resource Not Found: ' + request.url,
+            'status': 404
+        }
+        response = jsonify(message)
+        response.status_code = 404
+        return response
+
+
+class ContactForm(Form):
+    fullName = TextField("Full Name", validators=[InputRequired()])
+    companyName = TextField("Company Name")
+    email = TextField("Email", validators = [InputRequired()])
+    phone = IntegerField("Phone Number", validators=[InputRequired(), Length(min=8)])
+    subject = TextField("Subject", validators=[InputRequired()])
+    message = TextAreaField ("Message", validators = [InputRequired()])
+    submit = SubmitField("Send")
+
+
+class Contact():
+    @app.route('/contact', methods=["POST", "GET"])
+    def contact():
+        form = ContactForm()
+        if ({form.fullName == true}, {form.email == true}, {form.phone == true}, {form.subject == true}, {form.message == true}, {form.submit == true}):
+            return jsonify({"msg":"Thank you for your message! You should receive a response within 24 to 48 hours."}), 200
+        else:
+            return jsonify({ "error": "Please fill out the necessary items on the form"}), 401
     
 
     @app.errorhandler(404)

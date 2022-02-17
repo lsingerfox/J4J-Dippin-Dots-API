@@ -2,8 +2,7 @@ from flask import Flask, request, jsonify,json,session, redirect, render_templat
 from pymongo import MongoClient, database
 from flask_jwt import jwt_required, current_identity
 from flask_wtf import FlaskForm
-from sqlalchemy import true
-from wtforms import StringField, PasswordField, Form, TextField, TextAreaField, SubmitField, IntegerField
+from wtforms import StringField, PasswordField, TextAreaField, SubmitField, IntegerField
 from wtforms.validators import InputRequired, Length
 from werkzeug.security import check_password_hash
 from flask_login import login_required, logout_user, LoginManager
@@ -122,12 +121,12 @@ class Products():
         return response
 
 
-class ContactForm(Form):
-    fullName = TextField("Full Name", validators=[InputRequired()])
-    companyName = TextField("Company Name")
-    email = TextField("Email", validators = [InputRequired()])
+class ContactForm(FlaskForm):
+    fullName = StringField("Full Name", validators=[InputRequired()])
+    companyName = StringField("Company Name")
+    email = StringField("Email", validators = [InputRequired()])
     phone = IntegerField("Phone Number", validators=[InputRequired(), Length(min=8)])
-    subject = TextField("Subject", validators=[InputRequired()])
+    subject = StringField("Subject", validators=[InputRequired()])
     message = TextAreaField ("Message", validators = [InputRequired()])
     submit = SubmitField("Send")
 
@@ -136,7 +135,7 @@ class Contact():
     @app.route('/contact', methods=["POST", "GET"])
     def contact():
         form = ContactForm()
-        if ({form.fullName == true}, {form.email == true}, {form.phone == true}, {form.subject == true}, {form.message == true}, {form.submit == true}):
+        if ({form.fullName == True}, {form.email == True}):
             return jsonify({"msg":"Thank you for your message! You should receive a response within 24 to 48 hours."}), 200
         else:
             return jsonify({ "error": "Please fill out the necessary items on the form"}), 401

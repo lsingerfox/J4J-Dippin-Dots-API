@@ -132,7 +132,7 @@ class ContactForm(FlaskForm):
 
 
 class Contact():
-    @app.route('/contact', methods=["POST", "GET"])
+    @app.route('/contact', methods=["POST"])
     def contact():
         form = ContactForm()
         if ({form.fullName == True}, {form.email == True}):

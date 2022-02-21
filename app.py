@@ -1,3 +1,4 @@
+import email
 from flask import Flask, request, jsonify,json,session, redirect, render_template, url_for
 from pymongo import MongoClient, database
 from flask_jwt import jwt_required, current_identity
@@ -135,7 +136,14 @@ class Contact():
     @app.route('/contact', methods=["POST"])
     def contact():
         form = ContactForm()
-        if ({form.fullName == True}, {form.email == True}):
+        fullName = request.json.get("fullName")
+        companyName = request.json.get("companyName")
+        email = request.json.get("email")
+        phone = request.json.get("phone")
+        subject = request.json.get("subject")
+        message = request.json.get("message")
+        contact=db.contact.insert_one({"fullName": fullName, "companyName": companyName, "email": email, "phone": phone, "subject": subject, "message": message })
+        if (contact):
             return jsonify({"msg":"Thank you for your message! You should receive a response within 24 to 48 hours."}), 200
         else:
             return jsonify({ "error": "Please fill out the necessary items on the form"}), 401

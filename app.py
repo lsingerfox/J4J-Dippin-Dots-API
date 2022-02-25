@@ -158,11 +158,11 @@ class Contact():
     @app.route('/message/<id>', methods=["DELETE"])
     @cross_origin(supports_credentials=True)
     def message_delete(id):
-        message = db.contact.find_one("_id")
+        message = db.contact.find("id")
         db.session.delete(message)
         db.session.commit()
 
-        return "Message was successfully deleted"
+        return jsonify({"msg" : "Message was successfully deleted"})
 
 
     @app.errorhandler(404)

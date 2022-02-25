@@ -1,4 +1,3 @@
-import email
 from flask import Flask, request, jsonify,json,session, redirect, render_template, url_for
 from pymongo import MongoClient, database
 from flask_jwt import jwt_required, current_identity
@@ -148,6 +147,23 @@ class Contact():
         else:
             return jsonify({ "error": "Please fill out the necessary items on the form"}), 401
     
+    
+    @app.route('/messages', methods=["GET"])
+    @cross_origin(supports_credentials=True)
+    def messages():
+        message = db.contact.find({})
+        return ({"data": json.loads(json_util.dumps(message))})
+    
+
+    @app.route('/message/<id>', methods=["DELETE"])
+    @cross_origin(supports_credentials=True)
+    def message_delete(id):
+        message = db.contact.find_one("_id")
+        db.session.delete(message)
+        db.session.commit()
+
+        return "Message was successfully deleted"
+
 
     @app.errorhandler(404)
     def not_found(error=None):

@@ -1,5 +1,6 @@
-from flask import Flask, request, jsonify,json,session, redirect, render_template, url_for
-from pymongo import MongoClient, database
+from unittest import result
+from flask import Flask, Response, request, jsonify,json,session, redirect, render_template, url_for
+from pymongo import MongoClient
 from flask_jwt import jwt_required, current_identity
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, TextAreaField, SubmitField, IntegerField
@@ -7,7 +8,7 @@ from wtforms.validators import InputRequired, Length
 from werkzeug.security import check_password_hash
 from flask_login import login_required, logout_user, LoginManager
 import os
-from bson import json_util
+from bson import json_util, ObjectId
 from flask_cors import CORS,cross_origin
 
 class User():
@@ -158,11 +159,11 @@ class Contact():
     @app.route('/message/<id>', methods=["DELETE"])
     @cross_origin(supports_credentials=True)
     def message_delete(id):
-        message = db.contact.find("id")
-        db.session.delete(message)
-        db.session.commit()
-
-        return jsonify({"msg" : "Message was successfully deleted"})
+        messages_find = db.contact.find_one({})
+        print(messages_find)
+        messages = db.contact.delete_one({})
+        
+        return messages
 
 
     @app.errorhandler(404)

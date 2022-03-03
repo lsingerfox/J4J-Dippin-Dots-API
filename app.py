@@ -159,7 +159,7 @@ class Contact():
     @app.route('/message/<id>', methods=["DELETE"])
     @cross_origin(supports_credentials=True)
     def message_delete(id):
-        messages = db.contact.find_one_and_delete({"_id" : ObjectId})
+        messages = db.contact.find_one_and_delete({})
         
         return messages
 
